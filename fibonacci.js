@@ -19,10 +19,9 @@ function fibsRecursive(num) {
 		return [0, 1];
 	}
 
-	return [
-		...fibsRecursive(num - 1),
-		fibsRecursive(num - 1)[num - 2] + fibsRecursive(num - 1)[num - 3],
-	];
+	const sequence = fibsRecursive(num - 1);
+	sequence.push(sequence[sequence.length - 1] + sequence[sequence.length - 2]);
+	return sequence;
 }
 
 console.log(fibs(8));
