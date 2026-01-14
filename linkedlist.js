@@ -76,7 +76,7 @@ export default class LinkedList {
 		let doesContain = false;
 		let currentNode = this.head();
 		while (currentNode !== null) {
-			if (currentNode.value === value) {
+			if (currentNode.value.key === value) {
 				doesContain = true;
 				break;
 			}

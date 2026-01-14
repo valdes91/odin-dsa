@@ -46,6 +46,21 @@ class HashMap {
 			return returnedValue;
 		} else return null;
 	}
+
+	has(key) {
+		let hasKey = false;
+		let bucketIndex = 0;
+		while (bucketIndex < this.buckets.length && !hasKey) {
+			const currentBucket = this.buckets[bucketIndex];
+			if (currentBucket.contains(key)) {
+				hasKey = true;
+				break;
+			}
+			bucketIndex++;
+		}
+
+		return hasKey;
+	}
 }
 
 const hashmap = new HashMap();
@@ -59,3 +74,6 @@ console.log('looking for Dostoevsky...');
 console.log(hashmap.get('Dostoevsky'));
 console.log('looking for nonexistent Homer...');
 console.log(hashmap.get('Homer'));
+console.log(`Checking if hashmap has key "Miller": ${hashmap.has('Miller')}`);
+console.log(`Checking if hashmap has nonexistent key "Homer": ${hashmap.has('Homer')}`);
+console.log(`Checking if hashmap has key "Dostoevsky": ${hashmap.has('Dostoevsky')}`);
