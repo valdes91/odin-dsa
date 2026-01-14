@@ -85,6 +85,21 @@ export default class LinkedList {
 		return doesContain;
 	}
 
+	// method created for hashmap
+	update(updatedObj) {
+		let currentNode = this.listHead;
+		let didUpdate = false;
+		while (currentNode !== null) {
+			if (updatedObj.key === currentNode.value.key) {
+				currentNode.value.value = updatedObj.value;
+				didUpdate = true;
+				break;
+			}
+			currentNode = currentNode.nextNode;
+		}
+		return didUpdate;
+	}
+
 	findIndex(value) {
 		let index = 0;
 		let currentNode = this.head();
@@ -105,7 +120,7 @@ export default class LinkedList {
 		else {
 			let currentNode = this.head();
 			while (currentNode !== null) {
-				theList += `( ${currentNode.value} ) -> `;
+				theList += `( ${currentNode.value.key}: ${currentNode.value.value} ) -> `;
 				currentNode = currentNode.nextNode;
 			}
 			theList += 'null';

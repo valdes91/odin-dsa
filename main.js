@@ -30,6 +30,7 @@ console.log(`finding index for turtle: ${list.findIndex('turtle')}`);
 console.log(`finding index for cat: ${list.findIndex('cat')}`);
 
 console.log('popping everything...');
+
 while (list.getSize() > 0) {
 	console.log(list.toString());
 	list.pop();
