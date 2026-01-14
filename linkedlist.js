@@ -100,6 +100,18 @@ export default class LinkedList {
 		return didUpdate;
 	}
 
+	retrieve(key) {
+		let currentNode = this.listHead;
+		let value = null;
+		while (currentNode !== null) {
+			if (currentNode.value.key === key) {
+				value = currentNode.value.value;
+				break;
+			}
+		}
+		return value;
+	}
+
 	findIndex(value) {
 		let index = 0;
 		let currentNode = this.head();

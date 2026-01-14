@@ -37,6 +37,15 @@ class HashMap {
 			console.log('not valid index');
 		}
 	}
+
+	get(key) {
+		const bucketIndex = this.hash(key);
+		if (this.isValidIndex(bucketIndex)) {
+			const bucketList = this.buckets[bucketIndex];
+			const returnedValue = bucketList.retrieve(key);
+			return returnedValue;
+		} else return null;
+	}
 }
 
 const hashmap = new HashMap();
@@ -44,3 +53,9 @@ hashmap.set('The Oddysey', 'matt damon');
 hashmap.set('Dostoevsky', 'Crime and Punishment');
 hashmap.set('Miller', 'Circe');
 hashmap.set('Dostoevsky', 'White Nights');
+console.log('Looking for Miller...');
+console.log(hashmap.get('Miller'));
+console.log('looking for Dostoevsky...');
+console.log(hashmap.get('Dostoevsky'));
+console.log('looking for nonexistent Homer...');
+console.log(hashmap.get('Homer'));
