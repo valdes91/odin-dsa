@@ -126,6 +126,12 @@ export default class LinkedList {
 		return index;
 	}
 
+	remove(key) {
+		let wasRemoved = false;
+		let currentNode = this.listHead;
+		let prevNode = null;
+	}
+
 	toString() {
 		let theList = '';
 		if (this.getSize() === 0) return 'empty';

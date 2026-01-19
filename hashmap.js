@@ -4,6 +4,7 @@ class HashMap {
 	constructor() {
 		this.loadFactor = 0.75;
 		this.capacity = 16;
+		this.keys = 0;
 		this.buckets = Array.from({ length: this.capacity }, () => new LinkedList());
 	}
 
@@ -30,6 +31,7 @@ class HashMap {
 			const newEntry = { key, value };
 			if (!bucketList.update(newEntry)) {
 				bucketList.append(newEntry);
+				this.keys++;
 			}
 			console.log('list after updating');
 			console.log(bucketList.toString());
@@ -49,17 +51,80 @@ class HashMap {
 
 	has(key) {
 		let hasKey = false;
-		let bucketIndex = 0;
-		while (bucketIndex < this.buckets.length && !hasKey) {
-			const currentBucket = this.buckets[bucketIndex];
-			if (currentBucket.contains(key)) {
+		const bucketIndex = this.hash(key);
+		if (this.isValidIndex(bucketIndex)) {
+			const bucket = this.buckets[bucketIndex];
+			if (bucket.contains(key)) {
 				hasKey = true;
-				break;
 			}
-			bucketIndex++;
 		}
-
 		return hasKey;
+	}
+
+	remove(key) {
+		let removed = false;
+		const bucketIndex = this.hash(key);
+		if (this.isValidIndex(bucketIndex)) {
+			const bucket = this.buckets[bucketIndex];
+			removed = bucket.remove(key);
+		}
+		return removed;
+	}
+
+	length() {
+		return this.keys;
+	}
+
+	clear() {
+		let bucketIndex = 0;
+		for (let i = 0; i < this.buckets.length; i++) {
+			const bucket = this.buckets[bucketIndex];
+			while (bucket.getSize() > 0) {
+				bucket.pop();
+			}
+		}
+	}
+
+	getKeys() {
+		const hashMapKeys = [];
+		for (let i = 0; i < this.buckets.length; i++) {
+			const bucket = this.buckets[i];
+			let node = bucket.head();
+			while (node !== null) {
+				const key = node.value.key;
+				hashMapKeys.push(key);
+				node = node.nextNode;
+			}
+		}
+		return hashMapKeys;
+	}
+
+	getValues() {
+		const hashMapValues = [];
+		for (let i = 0; i < this.buckets.length; i++) {
+			const bucket = this.buckets[i];
+			let node = bucket.head();
+			while (node !== null) {
+				const value = node.value.value;
+				hashMapValues.push(value);
+				node = node.nextNode;
+			}
+		}
+		return hashMapValues;
+	}
+
+	getEntries() {
+		const hashMapEntries = [];
+		for (let i = 0; i < this.buckets.length; i++) {
+			const bucket = this.buckets[i];
+			let node = bucket.head();
+			while (node !== null) {
+				const entry = node.value;
+				hashMapEntries.push([entry.key, entry.value]);
+				node = node.nextNode;
+			}
+		}
+		return hashMapEntries;
 	}
 }
 
@@ -77,3 +142,6 @@ console.log(hashmap.get('Homer'));
 console.log(`Checking if hashmap has key "Miller": ${hashmap.has('Miller')}`);
 console.log(`Checking if hashmap has nonexistent key "Homer": ${hashmap.has('Homer')}`);
 console.log(`Checking if hashmap has key "Dostoevsky": ${hashmap.has('Dostoevsky')}`);
+console.log(`keys in the hashmap: ${hashmap.getKeys()}`);
+console.log(`values in the hashmap: ${hashmap.getValues()}`);
+console.log(`all entries in the hashmap: ${hashmap.getEntries()}`);
