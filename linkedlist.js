@@ -127,9 +127,23 @@ export default class LinkedList {
 	}
 
 	remove(key) {
-		let wasRemoved = false;
+		let removedNode = null;
 		let currentNode = this.listHead;
 		let prevNode = null;
+		while (currentNode !== null) {
+			if (currentNode.value.key === key && currentNode == this.listHead) {
+				removedNode = this.pop();
+				break;
+			} else if (currentNode.value.key === key) {
+				prevNode.nextNode = currentNode.nextNode;
+				removedNode = currentNode;
+				break;
+			} else {
+				prevNode = currentNode;
+				currentNode = currentNode.nextNode;
+			}
+		}
+		return removedNode;
 	}
 
 	toString() {

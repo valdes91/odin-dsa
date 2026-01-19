@@ -66,7 +66,9 @@ class HashMap {
 		const bucketIndex = this.hash(key);
 		if (this.isValidIndex(bucketIndex)) {
 			const bucket = this.buckets[bucketIndex];
-			removed = bucket.remove(key);
+			if (bucket.remove(key)) {
+				removed = true;
+			}
 		}
 		return removed;
 	}
@@ -145,3 +147,6 @@ console.log(`Checking if hashmap has key "Dostoevsky": ${hashmap.has('Dostoevsky
 console.log(`keys in the hashmap: ${hashmap.getKeys()}`);
 console.log(`values in the hashmap: ${hashmap.getValues()}`);
 console.log(`all entries in the hashmap: ${hashmap.getEntries()}`);
+console.log(`attempting to remove nonexistent key Marx: ${hashmap.remove('marx')}`);
+console.log(`attempting to remove existing key Dostoevsky: ${hashmap.remove('Dostoevsky')}`);
+console.log(`entries now: ${hashmap.getEntries()}`);
