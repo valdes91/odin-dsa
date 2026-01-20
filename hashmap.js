@@ -19,7 +19,7 @@ class HashMap {
 	}
 
 	isValidIndex(index) {
-		return !(index < 0 || index >= this.buckets.length);
+		return !(index < 0 || index >= this.capacity);
 	}
 
 	set(key, value) {
@@ -32,12 +32,34 @@ class HashMap {
 			if (!bucketList.update(newEntry)) {
 				bucketList.append(newEntry);
 				this.keys++;
+				if (this.keys > this.loadFactor * this.capacity) {
+					this.growBuckets();
+				}
 			}
-			console.log('list after updating');
-			console.log(bucketList.toString());
 		} else {
 			console.log('not valid index');
 		}
+	}
+
+	growBuckets() {
+		console.log('enough entries have been added to regrow the map. redistributing...');
+		this.capacity *= 2;
+		const newBuckets = Array.from({ length: this.capacity }, () => new LinkedList());
+		// copy every node in the current bucket list to the newBuckets with new hashes
+		for (let i = 0; i < this.buckets.length; i++) {
+			let bucketNode = this.buckets[i].head();
+			while (bucketNode !== null) {
+				const nodeValue = { key: bucketNode.value.key, value: bucketNode.value.value };
+				const hashIndex = this.hash(nodeValue.key);
+				if (this.isValidIndex(hashIndex)) {
+					newBuckets[hashIndex].append(nodeValue);
+				} else {
+					console.log('invalid index???');
+				}
+				bucketNode = bucketNode.nextNode;
+			}
+		}
+		this.buckets = newBuckets;
 	}
 
 	get(key) {
@@ -128,25 +150,35 @@ class HashMap {
 		}
 		return hashMapEntries;
 	}
+
+	printBuckets() {
+		for (let i = 0; i < this.buckets.length; i++) {
+			const bucket = this.buckets[i];
+			console.log(bucket.toString());
+		}
+	}
 }
 
-const hashmap = new HashMap();
-hashmap.set('The Oddysey', 'matt damon');
-hashmap.set('Dostoevsky', 'Crime and Punishment');
-hashmap.set('Miller', 'Circe');
-hashmap.set('Dostoevsky', 'White Nights');
-console.log('Looking for Miller...');
-console.log(hashmap.get('Miller'));
-console.log('looking for Dostoevsky...');
-console.log(hashmap.get('Dostoevsky'));
-console.log('looking for nonexistent Homer...');
-console.log(hashmap.get('Homer'));
-console.log(`Checking if hashmap has key "Miller": ${hashmap.has('Miller')}`);
-console.log(`Checking if hashmap has nonexistent key "Homer": ${hashmap.has('Homer')}`);
-console.log(`Checking if hashmap has key "Dostoevsky": ${hashmap.has('Dostoevsky')}`);
-console.log(`keys in the hashmap: ${hashmap.getKeys()}`);
-console.log(`values in the hashmap: ${hashmap.getValues()}`);
-console.log(`all entries in the hashmap: ${hashmap.getEntries()}`);
-console.log(`attempting to remove nonexistent key Marx: ${hashmap.remove('marx')}`);
-console.log(`attempting to remove existing key Dostoevsky: ${hashmap.remove('Dostoevsky')}`);
-console.log(`entries now: ${hashmap.getEntries()}`);
+const test = new HashMap();
+test.set('apple', 'red');
+test.set('banana', 'yellow');
+test.set('carrot', 'orange');
+test.set('dog', 'brown');
+test.set('elephant', 'gray');
+test.set('frog', 'green');
+test.set('grape', 'purple');
+test.set('hat', 'black');
+test.set('ice cream', 'white');
+test.set('jacket', 'blue');
+test.set('kite', 'pink');
+test.set('lion', 'golden');
+console.log(test.printBuckets());
+test.set('apple', 'envy');
+console.log(`hashmap length: ${test.length()} and capacity: ${test.capacity}`);
+test.set('banana', 'boat');
+console.log(`hashmap length: ${test.length()} and capacity: ${test.capacity}`);
+test.set('carrot', 'cake');
+console.log(`hashmap length: ${test.length()} and capacity: ${test.capacity}`);
+test.set('moon', 'silver');
+console.log(`hashmap length: ${test.length()} and capacity: ${test.capacity}`);
+console.log(test.printBuckets());

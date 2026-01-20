@@ -91,6 +91,7 @@ export default class LinkedList {
 		let didUpdate = false;
 		while (currentNode !== null) {
 			if (updatedObj.key === currentNode.value.key) {
+				console.log(`updating entry with key ${updatedObj.key}`);
 				currentNode.value.value = updatedObj.value;
 				didUpdate = true;
 				break;
