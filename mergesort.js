@@ -1,4 +1,4 @@
-function mergeSort(array) {
+export default function mergeSort(array) {
 	//base case: array is length 1
 	if (array.length <= 1) return array;
 	else {
@@ -39,8 +39,8 @@ function merge(leftArr, rightArr) {
 	return sortedArr;
 }
 
-console.log(mergeSort([]));
-console.log(mergeSort([73]));
-console.log(mergeSort([1, 2, 3, 4, 5]));
-console.log(mergeSort([3, 2, 1, 13, 8, 5, 0, 1]));
-console.log(mergeSort([105, 79, 100, 110]));
+// console.log(mergeSort([]));
+// console.log(mergeSort([73]));
+// console.log(mergeSort([1, 2, 3, 4, 5]));
+// console.log(mergeSort([3, 2, 1, 13, 8, 5, 0, 1]));
+// console.log(mergeSort([105, 79, 100, 110]));
