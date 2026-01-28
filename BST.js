@@ -128,6 +128,45 @@ class Tree {
 			if (nextNode.right !== null) nodesToVisit.push(nextNode.right);
 		}
 	}
+
+	preOrderForEach(callback) {
+		if (callback === undefined) throw Error('You must pass a callback');
+
+		this.preorderRecursive(this.root, callback);
+	}
+
+	preorderRecursive(node, callback) {
+		if (node === null) return;
+		callback(node);
+		this.preorderRecursive(node.left, callback);
+		this.preorderRecursive(node.right, callback);
+	}
+
+	inOrderForEach(callback) {
+		if (callback === undefined) throw Error('You must pass a callback');
+
+		this.inOrderRecursive(this.root, callback);
+	}
+
+	inOrderRecursive(node, callback) {
+		if (node === null) return;
+		this.inOrderRecursive(node.left, callback);
+		callback(node);
+		this.inOrderRecursive(node.right, callback);
+	}
+
+	postOrderForEach(callback) {
+		if (callback === undefined) throw Error('You must pass a callback');
+
+		this.postOrderRecursive(this.root, callback);
+	}
+
+	postOrderRecursive(node, callback) {
+		if (node === null) return;
+		this.postOrderRecursive(node.left, callback);
+		this.postOrderRecursive(node.right, callback);
+		callback(node);
+	}
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -169,3 +208,9 @@ try {
 	console.log('Error detected');
 	console.log(e.message);
 }
+console.log('Testing preorder for each...');
+myTree.preOrderForEach((node) => console.log(`NODE VALUE: ${node.data}`));
+console.log('Testing inorder for each...');
+myTree.inOrderForEach((node) => console.log(`NODE VALUE: ${node.data}`));
+console.log('Testing postorder for each...');
+myTree.postOrderForEach((node) => console.log(`NODE VALUE: ${node.data}`));
