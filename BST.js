@@ -114,6 +114,20 @@ class Tree {
 
 		return foundNode;
 	}
+
+	levelOrderForEach(callback) {
+		if (callback === undefined) throw Error('You must pass a callback');
+
+		const nodesToVisit = [];
+		nodesToVisit.push(this.root);
+
+		while (nodesToVisit.length > 0) {
+			let nextNode = nodesToVisit.shift();
+			callback(nextNode);
+			if (nextNode.left !== null) nodesToVisit.push(nextNode.left);
+			if (nextNode.right !== null) nodesToVisit.push(nextNode.right);
+		}
+	}
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -147,3 +161,11 @@ const foundNode = myTree.find(324);
 const notFoundNode = myTree.find(11);
 console.log(`Result for finding existing value of 67: ${foundNode.data}`);
 console.log(`Result for finding nonexisting value of 11: ${notFoundNode}`);
+console.log('Testing level order for each...');
+myTree.levelOrderForEach((node) => console.log(`NODE VALUE: ${node.data}`));
+try {
+	myTree.levelOrderForEach();
+} catch (e) {
+	console.log('Error detected');
+	console.log(e.message);
+}
