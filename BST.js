@@ -97,6 +97,23 @@ class Tree {
 		}
 		return subTree;
 	}
+
+	find(value) {
+		//const foundNode = this.findRecursive(this.root, value);
+		let curr = this.root;
+		let isFound = false;
+		let foundNode = null;
+		while (curr !== null && !isFound) {
+			if (value < curr.data) curr = curr.left;
+			else if (value > curr.data) curr = curr.right;
+			else {
+				foundNode = curr;
+				isFound = true;
+			}
+		}
+
+		return foundNode;
+	}
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -126,3 +143,7 @@ myTree.delete(4);
 prettyPrint(myTree.root);
 myTree.delete(8);
 prettyPrint(myTree.root);
+const foundNode = myTree.find(324);
+const notFoundNode = myTree.find(11);
+console.log(`Result for finding existing value of 67: ${foundNode.data}`);
+console.log(`Result for finding nonexisting value of 11: ${notFoundNode}`);
